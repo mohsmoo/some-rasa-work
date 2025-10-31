@@ -1,0 +1,55 @@
+version: "3.1"
+nlu:
+- intent: book_ticket
+  examples: |
+    - I want to **book** a train **ticket**
+    - **book** me a ticket
+    - Can I buy an reserved **train ticket**?
+    - I need a ticket from [Delhi](source) to [Mumbai](destination)
+    - book a ticket from [Bangalore](source) to [Chennai](destination)
+    - I want to go to [Kolkata](destination) from [Pune](source)
+    - I'm looking for a train ticket
+    - I need to travel from [Patna](source)
+    - book a ticket for [Jaipur](destination)
+    
+- intent: show_tickets
+  examples: |
+    - show my booked tickets
+    - what tickets do I have?
+    - list my travel history
+    - where are my reservations?
+    - show me my recent bookings
+    - can I see all the tickets I've bought?
+
+- intent: inform_payment_method
+  examples: |
+    - I'll pay with my [Credit Card](payment_method)
+    - I want to use [UPI](payment_method)
+    - [Debit Card](payment_method) is fine
+    - payment via [Net Banking](payment_method)
+    - [Card](payment_method)
+    - I'll use [Google Pay](payment_method)
+
+- intent: affirm
+  examples: |
+    - yes
+    - sure
+    - sounds good
+    - confirm
+    - proceed
+    - that's correct
+
+- intent: deny
+  examples: |
+    - no
+    - cancel
+    - don't do that
+    - not yet
+    - wrong
+
+- intent: thank
+  examples: |
+    - thank you
+    - thanks
+    - appreciate it
+    - thanks for your help

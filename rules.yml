@@ -1,0 +1,34 @@
+rules:
+
+# 1. Activation Rule: Always activate the form when the user requests a booking.
+- rule: Activate ticket booking form
+  steps:
+  - intent: book_ticket
+  - action: ticket_booking_form
+  - active_loop: ticket_booking_form # Activates the form loop
+
+# 2. Submission Rule: Runs after the form is finished (all required slots are filled).
+- rule: Submit ticket booking form
+  condition:
+  - active_loop: ticket_booking_form
+  steps:
+  - action: ticket_booking_form # Form completes and deactivates itself
+  - active_loop: null # Deactivates the form loop
+  # Next, immediately ask for final confirmation
+  - action: action_confirm_payment
+
+# Corrected Rule: Process Booking based on Confirmation
+- rule: Process Booking based on Confirmation
+  steps:
+  - action: action_confirm_payment
+  - or:
+    - intent: affirm 
+    - intent: deny  
+  - action: action_process_booking
+  # Note: The rule now ends here, predicting the default action_listen
+
+# 4. Show Tickets Rule: Always run the custom action when the user wants to see tickets.
+- rule: Show booked tickets
+  steps:
+  - intent: show_tickets
+  - action: action_retrieve_tickets

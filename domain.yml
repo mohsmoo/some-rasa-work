@@ -1,0 +1,87 @@
+version: "3.1"
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
+# --- Entities (extracted from NLU data) ---
+entities:
+  - source
+  - destination
+  - payment_method
+
+# --- Slots (where information is stored) ---
+slots:
+  source:
+    type: text
+    influence_conversation: true
+    # ADDED MAPPING: Try to fill this slot from the 'source' entity
+    mappings:
+      - type: from_entity
+        entity: source
+
+  destination:
+    type: text
+    influence_conversation: true
+    # ADDED MAPPING: Try to fill this slot from the 'destination' entity
+    mappings:
+      - type: from_entity
+        entity: destination
+
+  payment_method:
+    type: text
+    influence_conversation: true
+    # ADDED MAPPING: Try to fill this slot from the 'payment_method' entity
+    mappings:
+      - type: from_entity
+        entity: payment_method
+        intent: inform_payment_method # Optionally restrict this mapping to the specific intent
+
+  payment_confirmed:
+    # This slot is set by the custom action action_process_booking
+    # or validated via the affirm/deny intents, so it uses a custom mapping.
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom # Tells Rasa this slot is handled by a custom action/logic (which is true for our Form/Action)
+
+# --- Intents ---
+intents:
+  - book_ticket
+  - show_tickets
+  - inform_payment_method
+  - affirm
+  - deny
+  - thank
+
+# --- Responses (Utterances) ---
+responses:
+  # Messages used by the Form to ask for missing slots
+  utter_ask_source:
+    - text: "What is your **starting station** (Source)? E.g., Mumbai, Delhi."
+  utter_ask_destination:
+    - text: "And what is your **destination station**?"
+  utter_ask_payment_method:
+    - text: "How would you like to pay? We accept **UPI, Credit Card, or Debit Card**."
+
+  # Standard responses
+  utter_booked_successfully:
+    - text: "Fantastic! Your reserved ticket is booked. A confirmation SMS with your PNR is being sent shortly."
+  utter_default_fallback:
+    - text: "I'm sorry, I didn't quite catch that. Can you rephrase or tell me if you want to book a ticket?"
+  utter_welcome:
+    - text: "Welcome! I can help you with reserved train ticket booking. What can I do for you?"
+  utter_goodbye:
+    - text: "Thank you for using the ticket service. Have a safe journey!"
+
+# --- Actions and Forms ---
+actions:
+  - action_confirm_payment
+  - action_process_booking
+  - action_retrieve_tickets
+
+forms:
+  ticket_booking_form:
+    required_slots:
+      - source
+      - destination
+      - payment_method

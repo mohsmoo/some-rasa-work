@@ -1,0 +1,23 @@
+stories:
+
+## Story: Full ticket booking flow (Corrected)
+- story: Full ticket booking flow
+  steps:
+  - intent: book_ticket
+    entities:
+    - source: "Pune"
+    - destination: "Mumbai"
+    - payment_method: "UPI"
+  - action: ticket_booking_form
+  - active_loop: ticket_booking_form
+  - action: ticket_booking_form
+  - active_loop: null
+  - action: action_confirm_payment 
+  - intent: affirm 
+  - action: action_process_booking # Bot has finished, and now listens for the next command.
+
+## Story: Show Tickets Happy Path
+- story: User asks to see their tickets
+  steps:
+  - intent: show_tickets
+  - action: action_retrieve_tickets # Rule 4 triggers this custom action
